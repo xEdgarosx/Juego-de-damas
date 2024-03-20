@@ -1,5 +1,5 @@
 import pygame
-from board import draw_board, get_tile_coords, is_valid_move
+from board import draw_board, get_tile_coords, is_valid_move, is_valid_capture
 from pieces import select_piece, move_piece, initialize_board
 from ai import get_ai_move
 
@@ -30,10 +30,14 @@ while running:
                 selected_piece = (row, col)
             elif selected_piece:
                 start_row, start_col = selected_piece
-                if is_valid_move(board, start_row, start_col, row, col):
+                if is_valid_move(board, start_row, start_col, row, col, player_pieces, ai_pieces):
                     move_piece(board, player_pieces, ai_pieces, start_row, start_col, row, col)
+                    if abs(row - start_row) == 2:  # Captura de ficha
+                        capture_row = (start_row + row) // 2
+                        capture_col = (start_col + col) // 2
+                        ai_pieces.remove((capture_row, capture_col))
                     # Turno de la IA
-                    get_ai_move(board, ai_pieces)
+                    get_ai_move(board, ai_pieces, player_pieces)
                     selected_piece = None
 
     # Dibujar el tablero y las fichas

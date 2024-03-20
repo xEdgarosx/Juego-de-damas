@@ -29,14 +29,21 @@ def get_tile_coords(pos, window_width, window_height):
     col = x // tile_size
     return row, col
 
-def is_valid_move(board, start_row, start_col, end_row, end_col):
+def is_valid_move(board, start_row, start_col, end_row, end_col, player_pieces, ai_pieces):
     row_diff = abs(end_row - start_row)
     col_diff = abs(end_col - start_col)
 
-    # Movimiento válido en damas chinas (solo se mueve una casilla en diagonal)
-    if row_diff == 1 and col_diff == 1 and board[end_row][end_col] == 0:
+    # Movimiento válido en damas chinas (solo se mueve una casilla en diagonal a un cuadro negro)
+    if row_diff == 1 and col_diff == 1 and board[end_row][end_col] == 0 and (end_row + end_col) % 2 == 1:
         return True
 
-    # Implementar capturas de fichas aquí
+    # Captura de ficha (solo se captura en diagonal a un cuadro negro)
+    if row_diff == 2 and col_diff == 2 and board[end_row][end_col] == 0 and (end_row + end_col) % 2 == 1:
+        return is_valid_capture(board, start_row, start_col, end_row, end_col, ai_pieces)
 
     return False
+
+def is_valid_capture(board, start_row, start_col, end_row, end_col, opponent_pieces):
+    capture_row = (start_row + end_row) // 2
+    capture_col = (start_col + end_col) // 2
+    return (capture_row, capture_col) in opponent_pieces  # Hay una ficha del oponente para capturar
