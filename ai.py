@@ -73,7 +73,14 @@ def minimax(board, ai_pieces, player_pieces, depth, is_maximizing):
             best_score = min(best_score, score)
         return best_score
 
-def get_ai_move(board, ai_pieces, player_pieces, depth=2):
+def get_ai_move(board, ai_pieces, player_pieces, difficulty):
+    if difficulty == 'Fácil':
+        depth = 1
+    elif difficulty == 'medio':
+        depth = 3
+    elif difficulty == 'Difícil':
+        depth = 4
+
     best_move = None
     best_score = float('-inf')
 

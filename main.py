@@ -3,6 +3,14 @@ from board import draw_board, get_tile_coords, is_valid_move, is_valid_capture
 from pieces import select_piece, move_piece, initialize_board
 from ai import get_ai_move
 
+import sys
+
+# Obtener la dificultad del argumento pasado al script
+if len(sys.argv) > 1:
+    difficulty = sys.argv[1]
+
+print(difficulty)
+
 # Inicializar Pygame
 pygame.init()
 
@@ -37,7 +45,7 @@ while running:
                         capture_col = (start_col + col) // 2
                         ai_pieces.remove((capture_row, capture_col))
                     # Turno de la IA
-                    get_ai_move(board, ai_pieces, player_pieces)
+                    get_ai_move(board, ai_pieces, player_pieces, difficulty)
                     selected_piece = None
 
     # Dibujar el tablero y las fichas
